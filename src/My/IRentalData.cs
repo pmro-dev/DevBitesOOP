@@ -10,5 +10,5 @@
 	public bool IsRentalFinished { get; set; }
 
 	public void OpenRent(Position startingPosition);
-	public void CloseRent(decimal chargeAmount, int rentalTime, int loyaltyPointsGain, Position closingScooterPosition);
+	public void EndRent(decimal chargeAmount, int rentalTime, int loyaltyPointsGain, Position closingScooterPosition);
 }

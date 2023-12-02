@@ -2,6 +2,8 @@
 {
 	string Name { get; private set; }
 	string SpeedMode { get; private set; } = string.Empty;
+	bool IsAvailable { get; set; } = true;
+
 	private string _description = string.Empty;
 	private long _scooterId;
 

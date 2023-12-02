@@ -9,7 +9,13 @@
 		_maintenanceService = maintenanceService;
 	}
 
-    public bool Release(long scooterId)
+	public void Book(long scooterId)
+	{
+		// check if scooter is available,
+		// then set Scooter.IsAvailable to false and save to db
+	}
+
+	public bool Release(long scooterId)
 	{
 		Position lastPosition = GetPosition(scooterId);
 		_maintenanceService.Schedule(scooterId, lastPosition);

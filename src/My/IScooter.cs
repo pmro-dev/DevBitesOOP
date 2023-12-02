@@ -1,9 +1,11 @@
 ﻿public interface IScooter
 {
-	decimal Price { get; private set; }
-	bool IsScheduledForMaintenance { get; private set; }
-
-	public void Release(Position where);
+	public long ScooterId { get; private set; }
+	public decimal PricePerMinute { get; private set; }
+	public decimal UnlockingPrice { get; private set; }
+	public bool IsScheduledForMaintenance { get; private set; }
+	public Position LastPosition { get; set; }
+	public IScooterData Data { get; private set; }
 }
 
 

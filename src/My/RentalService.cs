@@ -24,9 +24,10 @@
 	{
 		_rentalData = new RentalData(_clientId, _scooterId);
 		_scooter = _scooterService.LoadScooter(scooterId);
+		_scooterService.Book(scooterId);
+		Position startingPoint = scooter.LastPosition;
 		_client = _clientService.LoadClient(clientId);
 
-		Position startingPoint = scooter.LastPosition;
 		_rentalData.OpenRent(startingPoint);
 		_stoper.Begin();
 	}
@@ -35,24 +36,44 @@
 	{
 		_stoper.End();
 		int rentalTime = _stoper.GetMinutes();
-		int loyaltyPointsGain = _loyaltyService.CalculatePoints(rentalTime, _client.IsImmediate);
-		decimal chargeAmount = _chargeService.Calculate(rentalTime, _scooter.PricePerMinute, _scooter.UnlockingPrice, _client.IsImmediate);
+		decimal chargeAmount = _chargeService.Calculate(rentalTime, _scooter.PricePerMinute, _scooter.UnlockingPrice, _client.IsImmediate, _client.ClientCredit);
+		int loyaltyPointsGain = _loyaltyService.CalculatePoints(rentalTime, _client.IsImmediate, chargeAmount);
 		Position endPosition = _scooterService.GetPosition(scooterId);
+
+		SetTransactionDataBasedOnPeriodType();
+
 		_rentalData.CloseRent(chargeAmount, rentalTime, loyaltyPointsGain, endPosition);
 
-		_scooterService.Release(scooterId);
+		_scooterService.Release(_scooter.ScooterId);
 		_paymentService.Charge(_rentalData);
 
-		return GetRentalSummary() ?? // throw and log;
+		bool isSaved =; // save to database rental data
+
+		return GetRentalSummary(isSaved) ?? // throw and log;
 	}
 
-	private IRentalData? GetRentalSummary()
+
+	private void SetTransactionDataBasedOnPeriodType()
 	{
-		if (_rentalData.IsRentalFinished)
+		if (_client.IsImmediate)
+		{
+			_client.ImmediateTransactionsCounter++;
+		}
+		else
+		{
+			_client.MonthlyPaymentDescriptions.add(_scooter.Data.Description);
+		}
+	}
+
+
+	private IRentalData? GetRentalSummary(bool isSaved)
+	{
+		if (_rentalData.IsRentalFinished && isSaved)
 		{
 			return _rentalData;
 		}
 
 		return null;
 	}
+
 }

@@ -23,7 +23,7 @@
 		IsRentalFinished = false;
 	}
 
-	public void CloseRent(decimal chargeAmount, int rentalTime, int loyaltyPointsGain, Position closingScooterPosition)
+	public void EndRent(decimal chargeAmount, int rentalTime, int loyaltyPointsGain, Position closingScooterPosition)
 	{
 		ChargeAmount = chargeAmount;
 		RentalTime = rentalTime;
