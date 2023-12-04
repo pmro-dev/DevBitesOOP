@@ -27,11 +27,16 @@
 		return _localizationService.Localize(scooterId);
 	}
 
-	public Scooter LoadScooter(scooterId)
+	public Scooter LoadScooter(long scooterId)
 	{
 		Scooter scooter =;
 		// database etc
 
 		return scooter
+	}
+
+	public void SetMaintenancyAsRequired(long scooterId)
+	{
+		//
 	}
 }

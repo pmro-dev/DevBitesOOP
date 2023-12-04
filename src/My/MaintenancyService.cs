@@ -9,20 +9,25 @@
 		_scooter = _scooterService.
 	}
 
-    public void Schedule(long scooterId, Position lastPosition)
+    public void Schedule(long scooterId)
 	{
-		IsMaintenancyRequired(scooterId);
+		if (IsMaintenancyRequired(scooterId))
+		{
+			_scooterService.SetMaintenancyAsRequired(scooterId);
+		}
 	}
 
 	public bool IsMaintenancyRequired(long scooterId)
 	{
+		bool maintenanceStatus = false;
+
 		float batteryLevel = _scooterService.GetEnergyLevel(scooterId);
 
 		if (batteryLevel < 0.07)
 		{
-			_scooterService.MaintenancyRequired(scooterId);
+			maintenanceStatus = true;
 		}
 
-		return scheduleForMaintenance;
+		return maintenanceStatus;
 	}
 }

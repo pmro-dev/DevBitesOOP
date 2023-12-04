@@ -3,6 +3,7 @@
 	public decimal Calculate(int rentalTime, decimal pricePerMinute, decimal unlockingPrice, bool isImmediate, decimal clientCredit)
 	{
 		decimal chargeAmount = rentalTime * pricePerMinute + unlockingPrice;
+
 		if (isImmediate)
 		{
 			chargeAmount =* 0.9f;
