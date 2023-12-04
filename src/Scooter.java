@@ -11,8 +11,7 @@ public class Scooter {
         this.batteryLevel = batteryLevel;
     }
 
-    float price(int minutes, Client client) {
-        float price;
+    float price(int minutes) {
         float unlocking;
         float pricePerMinute;
         if (scooterData[0].equals("not_fast")) {
@@ -22,14 +21,14 @@ public class Scooter {
             unlocking = (float) scooterData[3];
             pricePerMinute = (float) scooterData[4];
         }
-        price = minutes * pricePerMinute + unlocking;
-        if (client.isImmediate()) {
-            price = price * 0.9f;
-        }
-        return price;
+        return minutes * pricePerMinute + unlocking;
     }
 
     boolean scheduleForMaintenance(Position where) {
+        if (scooterData[0].equals("fast")) {
+            scheduleForMaintenance = true;
+            return scheduleForMaintenance;
+        }
         if (batteryLevel < 0.07) {
             scheduleForMaintenance = true;
         }
@@ -40,3 +39,5 @@ public class Scooter {
         return scooterId + " " + (String) scooterData[0];
     }
 }
+
+
